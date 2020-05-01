@@ -14,11 +14,13 @@ let bankAccount = (ownerName) => {
     let balance = 0;
     let owner = ownerName;
     let withdr = 0;
+    let deppo = 0;
 
     let getInfo = function() {
         $("namediv").innerHTML = ownerName;
-        $("depdiv").innerHTML = balance;
-        $("wthdiv").innerHTML = withdr;
+        $("depdiv").innerHTML = "$" + deppo;
+        $("wthdiv").innerHTML = "$" + withdr;
+        $("balancediv").innerHTML = "You have  " + "$" + balance + " in your account.";
     };
         getInfo();
         
@@ -28,8 +30,10 @@ let bankAccount = (ownerName) => {
             } else if (withdrawalAmount > balance) {
                 window.alert("You have insufficient fund.");
             } else {
+                withdr = withdrawalAmount;
                 balance -= withdrawalAmount;
                 getInfo();
+
             }
 
         },
@@ -38,6 +42,7 @@ let bankAccount = (ownerName) => {
             if (depositAmount === isNaN || depositAmount < 0) {
                 window.alert("Invalid input.");
             } else {
+                deppo = depositAmount;
                 balance += depositAmount;
                 getInfo();
             }
