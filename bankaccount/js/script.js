@@ -51,8 +51,6 @@ let bankAccount = (ownerName) => {
         
     };
 
-
-
 };
 
 window.addEventListener("load", function () {
@@ -79,8 +77,6 @@ window.addEventListener("load", function () {
         let wthdraw = window.prompt("Enter withdraw amount $");
             account.withdrawal(Number(wthdraw));
     };
-
-    
 
 });
 
