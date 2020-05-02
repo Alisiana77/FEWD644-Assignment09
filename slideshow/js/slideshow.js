@@ -4,8 +4,8 @@
 var createSlideshow = function () {
     "use strict";
     // PRIVATE VARIABLES AND FUNCTIONS
-    var timer, play = true, nodes, img, stopSlideShow, displayNextImage, setPlayText;
-    
+    var timer, play = true, nodes, img, speed,stopSlideShow, displayNextImage, setPlayText, setSpeedText;
+    var speed = 2000;
     nodes = { image: null, caption: null };
     img = { cache: [], counter: 0 };
     
@@ -29,6 +29,10 @@ var createSlideshow = function () {
             btn.value = "Pause";
         }
     };
+    // SET SPEED TEXT
+    setSpeedText = function (btn) {
+        btn.value = "Speed " + speed + " ms/slide";
+    };
     // PUBLIC METHODS THAT HAVE ACCESS TO PRIVATE VARIABLES AND FUNCTIONS
     return {
         loadImages: function (slides) {
@@ -39,14 +43,16 @@ var createSlideshow = function () {
                 image.title = slides[i].title;
                 img.cache.push(image);
             }
+            //setSpeedText($("speed"));
             return this;
         },
+
         startSlideShow: function () {
             if (arguments.length === 2) {
                 nodes.image = arguments[0];
                 nodes.caption = arguments[1];
             }
-            timer = setInterval(displayNextImage, 2000);
+            timer = setInterval(displayNextImage, this.getSpeed());
             return this;
         },
         createToggleHandler: function () {
@@ -64,7 +70,36 @@ var createSlideshow = function () {
                 // TOGGLE PLAY 'FLAG'
                 play = !play;
             };
-        }
+        },
+        // SPEED
+        setSpeed: function () {
+           
+            var me = this;
+            return function () {
+                let setNewSpeed = window.prompt(" Current slide speed is " + speed + " ms." + " Set your desire speed here.");            
+            
+            if (setNewSpeed > 0) {
+                speed = Number(setNewSpeed);
+                setSpeedText(this);
+                if (play) {
+                    stopSlideShow();
+                    
+                } 
+            };
+            me.startSlideShow();
+           
+        };
+                      
+        },
+
+        
+
+        getSpeed: function () {
+            return speed;
+        },
+
+        
+
     };
 };
 
@@ -89,4 +124,7 @@ window.addEventListener("load", function () {
     slideshow.loadImages(slides).startSlideShow($("image"), $("caption"));
     // PAUSE THE SLIDESHOW
     $("play_pause").onclick = slideshow.createToggleHandler();
+
+    // SPEED UP & DOWN SLIDESHOW
+    $("speed").onclick = slideshow.setSpeed();
 });
